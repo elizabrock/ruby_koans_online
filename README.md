@@ -26,7 +26,7 @@ Dependecies are handled by [npm](http://npmjs.org/). Ruby Koans Online is tested
 
 To start the development server, run `rackup` and point your browser to `localhost:9292`
 
-Alternatively, you could use `rerun`. This reloads the app for you when changes are detected.
+Alternatively, you could use [`rerun`](https://rubygems.org/gems/rerun). This reloads the app for you when changes are detected.
 
 `rerun -p "**.*.{rb,ru,haml,css,js,yml}" rackup`
 
