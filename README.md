@@ -28,7 +28,7 @@ To start the development server, run `rackup` and point your browser to `localho
 
 Alternatively, you could use [`rerun`](https://rubygems.org/gems/rerun). This reloads the app for you when changes are detected:
 
-`rerun -p "**.*.{rb,ru,haml,css,js,yml}" rackup`
+`rerun -p "**.*.{rb,ru,haml,css,js,yml}" puma`
 
 #### Running the tests:
 
