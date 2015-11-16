@@ -88,13 +88,6 @@ h1 span.with {
   top: 290px;
 }
 
-#swoosh {
-  position: absolute;
-  right: 50px;
-  top: 0px;
-  z-index: -999;
-}
-
 .red, .green, .refactor { font-weight: bold }
 .red { color: red }
 .green { color: green }
