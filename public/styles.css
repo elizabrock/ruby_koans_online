@@ -82,11 +82,6 @@ h1 span.with {
   border-bottom: 1px solid rgba(255,255,255 , 0.8);
 }
 
-#rotateTeam {
-  position: absolute;
-  right: 213px;
-  top: 159px;
-}
 #teamLabel {
   position: absolute;
   right: 228px;

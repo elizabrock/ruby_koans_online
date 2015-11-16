@@ -46,7 +46,7 @@ class String
         method_area = true
         method_indentation = match[1].size
         method_name = (methodx = line.match(/test_\S*/)) && methodx[0]
-      elsif line.start_with?(/\s{#{method_indentation}}end/) && method_area
+      elsif (match = line.match(/^\s{#{method_indentation}}end/)) && method_area
         method_area = false
         method_name = nil
       end

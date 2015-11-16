@@ -35,7 +35,7 @@ class FakeFile
   end
 
   def map(&block)
-    CONTENT.map(&block)
+    @lines.map(&block)
   end
 
   def inspect
@@ -66,14 +66,6 @@ def current_koan_name
     KOAN_FILENAMES.first
   end
 end
-def edgecaser_images
-  require 'net/http'
-  require 'uri'
-
-  url = URI.parse('http://neo.com/')
-  res = Net::HTTP.start(url.host, url.port) {|http| http.get('/about') }
-  res.body.scan(/\/images\/team\/\w*?\.jpg/)
-end
 def next_koan_name
   KOAN_FILENAMES[current_koan_count]
 end
@@ -93,7 +85,7 @@ def runnable_code(session={})
     gsub("ENV", "{:hacker => \"AH AH AH! YOU DIDN\'T SAY THE MAGIC WORD!\"}")
   index = code.rindex(/class About\w*? \< EdgeCase::Koan/)
   global_code = code[0...index]
-  reset_global_classes = (global_code.scan(/class (\w+)/) + CLASSES_ALLOWED).collect{|c| "Object.send(:remove_const, :#{c}) if defined? #{c};" }.join
+  reset_global_classes = (global_code.scan(/class (\w+)/).flatten + CLASSES_ALLOWED).collect{|c| "Object.send(:remove_const, :#{c}) if defined? #{c};" }.join
   global_code = "#{reset_global_classes}begin; Object.send(:remove_method, :triangle);rescue;end#{global_code}"
   code = code[index..-1]
   <<-RUNNABLE_CODE
@@ -130,14 +122,19 @@ def run_koan
     results = {:failures => {}}
     results = Thread.new { eval runnable_code(session), TOPLEVEL_BINDING }.value
   rescue SecurityError => se
+    # TODO: Test me
     @error = "What do you think you're doing, Dave?"
   rescue TimeoutError => te
+    # TODO: Test me
     @error = 'Do you have an infinite loop?'
   rescue StandardError => e
+    # TODO: Test me
     @error = ['standarderror', e.message, e.backtrace, e.inspect].flatten.join('<br/>')
   rescue Exception => e
+    # TODO: Test me
     @error = ['syntax error', e.message].flatten.join('<br/>')
   rescue Error => e
+    # TODO: Test me
     @error = ['error', e.message].flatten.join('<br/>')
   end
   @pass_count = results[:pass_count]

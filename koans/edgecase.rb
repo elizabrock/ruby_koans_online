@@ -122,16 +122,10 @@ module EdgeCase
   class Sensei
     attr_reader :failure, :failed_test, :pass_count
 
-    in_ruby_version("1.8") do
+    if defined?(MiniTest)
+      AssertionError = MiniTest::Assertion
+    else
       AssertionError = Test::Unit::AssertionFailedError
-    end
-
-    in_ruby_version("1.9") do
-      if defined?(MiniTest)
-        AssertionError = MiniTest::Assertion
-      else
-        AssertionError = Test::Unit::AssertionFailedError
-      end
     end
 
     def initialize
