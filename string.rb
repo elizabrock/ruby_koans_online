@@ -165,7 +165,8 @@ class String
     return nil if failure.nil?
     failure.message.gsub!(/KoanArena::UniqueRun[\d]+::/, '')
     if failure.message.include? "FILL ME IN"
-      "  Please meditate on the following.".preify
+      failure.message.gsub('"FILL ME IN"', "").preify
+      # "  Please meditate on the following.".preify
     elsif failure.message.include? "undefined local"
       failure.message.split("for #<").first.preify
     else

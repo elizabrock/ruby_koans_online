@@ -94,7 +94,7 @@ def runnable_code(session={})
     Test::Unit::Assertions::AssertionMessage.use_pp= false
 
     RESULTS = {:failures => {}, :pass_count => 0}
-    $SAFE = 3
+    $SAFE = 2
     Timeout.timeout(2) {
       #{global_code}
       module KoanArena
@@ -130,6 +130,9 @@ def run_koan
   rescue StandardError => e
     # TODO: Test me
     @error = ['standarderror', e.message, e.backtrace, e.inspect].flatten.join('<br/>')
+  rescue SyntaxError => e
+    # TODO: Test me
+    @error = ['syntax error', e.message].flatten.join('<br/>')
   rescue Exception => e
     # TODO: Test me
     @error = ['syntax error', e.message].flatten.join('<br/>')
