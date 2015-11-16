@@ -1,6 +1,6 @@
 # Learn Ruby... Now
-## With the [Neo](http://www.neo.com) Ruby Koans online
-###[http://koans.heroku.com](http://koans.heroku.com)
+## With the Ruby Koans online
+###[https://elizakoans.herokuapp.com/](https://elizakoans.herokuapp.com/)
 
 The Koans walk you along the path to enlightenment in order to learn Ruby. The goal is to learn the Ruby language, syntax, structure, and some common functions and libraries. We also teach you culture. Testing is not just something we pay lip service to, but something we live. It is essential in your quest to learn and do great things in the language.
 
@@ -16,7 +16,7 @@ Online now and take your first step into the wonderful world of Ruby.
 
 ### Ruby Dependencies
 
-The koans currently run on ree 1.8.7. Ruby gem dependencies are handled by [bundler](http://gembulder.com). To install all the necessary gems, run `bundle install`.
+The koans currently run on MRI 2.2.3. Ruby gem dependencies are handled by [bundler](http://gembulder.com). To install all the necessary gems, run `bundle install`.
 
 ### Phantomjs Dependency
 
