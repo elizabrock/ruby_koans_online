@@ -285,4 +285,25 @@ end'
     # example_file.txt means that this was routed to FakeFile
     assert_include page.body, "undefined method `each_line' for #&lt;File:example_file.txt&gt;"
   end
+
+  def test_io_open_in_about_triangle
+    page.reset!
+    page.visit "/en/about_triangle_project"
+    io_open_answer = 'def triangle(a, b, c)
+IO.readlines("config.ru")
+end'
+    fill_inputs_with [io_open_answer]
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "private method `readlines' called for FakeFile:Class"
+  end
+
+  def test_io_open_in_about_nil
+    page.reset!
+    page.visit "/en/about_nil"
+    modified_answers = KoansWithAnswers[:about_nil].clone
+    modified_answers[0] = 'IO.readlines("config.ru")'
+    fill_inputs_with modified_answers
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "private method `readlines' called for FakeFile:Class"
+  end
 end

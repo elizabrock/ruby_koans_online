@@ -81,6 +81,7 @@ def runnable_code(session={})
   code = current_koan.swap_user_values(input,request,session).
     gsub(" ::About", " About").
     gsub("File", "FakeFile").
+    gsub("IO", "FakeFile").
     gsub(/([^\.])open\(/, '\1FakeFile.gimme(').
     gsub("ENV", "{:hacker => \"AH AH AH! YOU DIDN\'T SAY THE MAGIC WORD!\"}")
   index = code.rindex(/class About\w*? \< EdgeCase::Koan/)
