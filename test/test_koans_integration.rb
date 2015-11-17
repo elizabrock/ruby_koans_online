@@ -191,4 +191,43 @@ end"
     assert_include page.body, "Do you have an infinite loop?"
     assert_include page.body, "Click your browser back button to return."
   end
+
+  FILE_OPEN = 'File.open("config.ru")'
+  def test_file_open_in_about_triangle_without_leading_space
+    page.reset!
+    page.visit "/en/about_triangle_project"
+    fill_inputs_with [FILE_OPEN]
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "Standard Error"
+    assert_include page.body, "private method `open' called for FakeFile:Class"
+  end
+
+  def test_file_open_in_about_triangle_with_leading_space
+    page.reset!
+    page.visit "/en/about_triangle_project"
+    fill_inputs_with [" " + FILE_OPEN]
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "Standard Error"
+    assert_include page.body, "private method `open' called for FakeFile:Class"
+  end
+
+  def test_file_open_in_about_asserts_without_leading_space
+    page.reset!
+    page.visit "/en/about_asserts"
+    modified_answers = KoansWithAnswers[:about_asserts].clone
+    modified_answers[0] = FILE_OPEN
+    fill_inputs_with modified_answers
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "private method `open' called for FakeFile:Class"
+  end
+
+  def test_file_open_in_about_asserts_with_leading_space
+    page.reset!
+    page.visit "/en/about_asserts"
+    modified_answers = KoansWithAnswers[:about_asserts].clone
+    modified_answers[0] = " " + FILE_OPEN
+    fill_inputs_with modified_answers
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "private method `open' called for FakeFile:Class"
+  end
 end

@@ -133,11 +133,11 @@ def run_koan
       rescue SyntaxError => e
         @error = ['Syntax Error', e.message].flatten.join('<br/>')
         error_results
+      rescue StandardError => e
+        @error = ['Standard Error', e.message, e.backtrace, e.inspect].flatten.join('<br/>')
+        error_results
       end
     }.value
-  rescue StandardError => e
-    # TODO: Test me
-    @error = ['standarderror', e.message, e.backtrace, e.inspect].flatten.join('<br/>')
   rescue Exception => e
     # TODO: Test me
     @error = ['syntax error', e.message].flatten.join('<br/>')
