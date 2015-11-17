@@ -120,7 +120,14 @@ def run_koan
   count = 0
   begin
     results = {:failures => {}}
-    results = Thread.new { eval runnable_code(session), TOPLEVEL_BINDING }.value
+    results = Thread.new {
+      begin
+        eval(runnable_code(session), TOPLEVEL_BINDING)
+      rescue SyntaxError => e
+        @error = ['Syntax Error', e.message].flatten.join('<br/>')
+        { pass_count: 0, failures: {} }
+      end
+    }.value
   rescue SecurityError => se
     # TODO: Test me
     @error = "What do you think you're doing, Dave?"

@@ -7,7 +7,7 @@ class String
   end
 
   def preify
-    self.gsub('<','&lt;').gsub('>','&gt;').gsub("\n","<br/>").gsub("\s","&nbsp;")
+    "<pre>" + self.gsub('<','&lt;').gsub('>','&gt;') + "</pre>"
   end
 
   def swap_user_values(input_values, request, session)

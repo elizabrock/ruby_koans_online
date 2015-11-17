@@ -99,4 +99,39 @@ class TestKoansIntegration < Test::Unit::TestCase
       click_on "Click to submit Meditation or press Enter while in the form."
       assert_include page.body, "has heightened your awareness"
   end
+
+  def test_about_triangle_syntax_error
+    page.reset!
+    missing_end_answer = "def triangle(a,b,c)
+if a == b && b == c
+if c == a
+:equilateral
+else
+:isosceles
+end
+end"
+    page.visit "/en/about_triangle_project"
+    fill_inputs_with [missing_end_answer]
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "Syntax Error"
+    assert_include page.body, "Click your browser back button to return."
+  end
+
+  def test_about_triangle_undefined_method_should_show_errors
+    page.reset!
+    undefined_method_answer = "def triangle(a,b,c)
+  matching_sides = [ a==b, b==c, c==a]
+  if matching_sides.sum(true) == 3
+    :equilateral
+  elsif matching_sides.sum(true) == 2
+    :isosceles
+  else
+    :scalene
+  end
+end"
+    page.visit "/en/about_triangle_project"
+    fill_inputs_with [undefined_method_answer]
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "undefined method `sum' for [true, true, true]:Array"
+  end
 end
