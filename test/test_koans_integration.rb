@@ -134,4 +134,39 @@ end"
     click_on "Click to submit Meditation or press Enter while in the form."
     assert_include page.body, "undefined method `sum' for [true, true, true]:Array"
   end
+
+  def test_attempts_to_shell_out
+    page.reset!
+    attempt_to_shell_out = "`pwd`"
+    page.visit "/en/about_triangle_project"
+    fill_inputs_with [attempt_to_shell_out]
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "What do you think you're doing, Dave?"
+    assert_include page.body, "Click your browser back button to return."
+  end
+
+  def test_infinite_loop_in_about_triangle
+    page.reset!
+    infinite_loop = "def triangle(a, b, c)
+  while(true) do
+    puts 'hi'
+  end
+end"
+    page.visit "/en/about_triangle_project"
+    fill_inputs_with [infinite_loop]
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "Do you have an infinite loop?"
+    assert_include page.body, "Click your browser back button to return."
+  end
+
+  def test_infinite_loop_in_about_asserts
+    page.reset!
+    modified_answers = KoansWithAnswers[:about_asserts].clone
+    modified_answers[0] = 'loop{ puts "hi" }'
+    page.visit "/en/about_asserts"
+    fill_inputs_with modified_answers
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "Do you have an infinite loop?"
+    assert_include page.body, "Click your browser back button to return."
+  end
 end

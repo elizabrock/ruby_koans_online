@@ -121,25 +121,23 @@ def run_koan
   begin
     results = {:failures => {}}
     results = Thread.new {
+      error_results = { pass_count: 0, failures: {} }
       begin
         eval(runnable_code(session), TOPLEVEL_BINDING)
+      rescue SecurityError => se
+        @error = "What do you think you're doing, Dave?"
+        error_results
+      rescue TimeoutError => te
+        @error = 'Do you have an infinite loop?'
+        error_results
       rescue SyntaxError => e
         @error = ['Syntax Error', e.message].flatten.join('<br/>')
-        { pass_count: 0, failures: {} }
+        error_results
       end
     }.value
-  rescue SecurityError => se
-    # TODO: Test me
-    @error = "What do you think you're doing, Dave?"
-  rescue TimeoutError => te
-    # TODO: Test me
-    @error = 'Do you have an infinite loop?'
   rescue StandardError => e
     # TODO: Test me
     @error = ['standarderror', e.message, e.backtrace, e.inspect].flatten.join('<br/>')
-  rescue SyntaxError => e
-    # TODO: Test me
-    @error = ['syntax error', e.message].flatten.join('<br/>')
   rescue Exception => e
     # TODO: Test me
     @error = ['syntax error', e.message].flatten.join('<br/>')
