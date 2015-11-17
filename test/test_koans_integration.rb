@@ -117,6 +117,17 @@ end"
     assert_include page.body, "Click your browser back button to return."
   end
 
+  def test_about_asserts_syntax_error
+    page.reset!
+    modified_answers = KoansWithAnswers[:about_asserts].clone
+    modified_answers[0] = ":::"
+    page.visit "/en/about_asserts"
+    fill_inputs_with modified_answers
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "Syntax Error"
+    assert_include page.body, "Click your browser back button to return."
+  end
+
   def test_about_triangle_undefined_method_should_show_errors
     page.reset!
     undefined_method_answer = "def triangle(a,b,c)
