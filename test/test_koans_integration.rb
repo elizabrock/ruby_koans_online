@@ -230,4 +230,59 @@ end"
     click_on "Click to submit Meditation or press Enter while in the form."
     assert_include page.body, "private method `open' called for FakeFile:Class"
   end
+
+  def test_open_in_about_triangle_with_leading_space
+    page.reset!
+    page.visit "/en/about_triangle_project"
+    triangle_open = 'def triangle(a, b, c)
+ open("config.ru").each_line { |line| puts line }
+end'
+    fill_inputs_with [triangle_open]
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "undefined method `each_line' for #&lt;File:example_file.txt&gt;"
+  end
+
+  def test_open_in_about_triangle_without_whitespace
+    page.reset!
+    page.visit "/en/about_triangle_project"
+    triangle_open = 'def triangle(a, b, c)open("config.ru").each_line { |line| puts line } \n end'
+    fill_inputs_with [triangle_open]
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "Syntax Error"
+  end
+
+  def test_open_in_about_triangle_without_leading_space
+    page.reset!
+    page.visit "/en/about_triangle_project"
+    triangle_open = 'def triangle(a, b, c)
+open("config.ru").each_line { |line| puts line }
+end'
+    fill_inputs_with [triangle_open]
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "undefined method `each_line' for #&lt;File:example_file.txt&gt;"
+  end
+
+  def test_open_in_about_asserts_with_leading_space
+    page.reset!
+    page.visit "/en/about_asserts"
+    modified_answers = KoansWithAnswers[:about_asserts].clone
+    # The extra leading spaces are significant!:
+    modified_answers[0] = '  open("config.ru").each_line { |line| puts line }'
+    fill_inputs_with modified_answers
+    click_on "Click to submit Meditation or press Enter while in the form."
+    # example_file.txt means that this was routed to FakeFile
+    assert_include page.body, "undefined method `each_line' for #&lt;File:example_file.txt&gt;"
+  end
+
+  def test_open_in_about_asserts_without_leading_space
+    page.reset!
+    page.visit "/en/about_asserts"
+    modified_answers = KoansWithAnswers[:about_asserts].clone
+    # The lack of leading space is significant!:
+    modified_answers[0] = 'open("config.ru").each_line { |line| puts line }'
+    fill_inputs_with modified_answers
+    click_on "Click to submit Meditation or press Enter while in the form."
+    # example_file.txt means that this was routed to FakeFile
+    assert_include page.body, "undefined method `each_line' for #&lt;File:example_file.txt&gt;"
+  end
 end
