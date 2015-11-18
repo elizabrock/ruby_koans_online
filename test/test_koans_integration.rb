@@ -325,4 +325,25 @@ end'
     click_on "Click to submit Meditation or press Enter while in the form."
     assert_include page.body, "undefined method `getwd' for FakeFile:Class"
   end
+
+  HTTP_REQUEST = 'Net::HTTP.get_response(URI.parse("http://localhost:9292"))'
+  def test_http_request_about_triangle
+    page.reset!
+    page.visit "/en/about_triangle_project"
+    fill_inputs_with ["def triangle(a, b, c) \n #{HTTP_REQUEST} \n end"]
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "What do you think you're doing, Dave?"
+    assert_include page.body, "Click your browser back button to return."
+  end
+
+  def test_http_request_about_asserts
+    page.reset!
+    page.visit "/en/about_asserts"
+    modified_answers = KoansWithAnswers[:about_asserts].clone
+    modified_answers[0] = HTTP_REQUEST
+    fill_inputs_with modified_answers
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "What do you think you're doing, Dave?"
+    assert_include page.body, "Click your browser back button to return."
+  end
 end
