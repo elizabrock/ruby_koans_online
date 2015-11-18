@@ -306,4 +306,23 @@ end'
     click_on "Click to submit Meditation or press Enter while in the form."
     assert_include page.body, "private method `readlines' called for FakeFile:Class"
   end
+
+  DIR_REQUEST = 'Dir.getwd'
+  def test_dir_request_about_triangle
+    page.reset!
+    page.visit "/en/about_triangle_project"
+    fill_inputs_with ["def triangle(a, b, c) \n #{DIR_REQUEST} \n end"]
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "undefined method `getwd' for FakeFile:Class"
+  end
+
+  def test_dir_request_about_asserts
+    page.reset!
+    page.visit "/en/about_asserts"
+    modified_answers = KoansWithAnswers[:about_asserts].clone
+    modified_answers[0] = DIR_REQUEST
+    fill_inputs_with modified_answers
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "undefined method `getwd' for FakeFile:Class"
+  end
 end

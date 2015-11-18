@@ -82,6 +82,7 @@ def runnable_code(session={})
     gsub(" ::About", " About").
     gsub("File", "FakeFile").
     gsub("IO", "FakeFile").
+    gsub("Dir", "FakeFile").
     gsub(/([^\.])open\(/, '\1FakeFile.gimme(').
     gsub("ENV", "{:hacker => \"AH AH AH! YOU DIDN\'T SAY THE MAGIC WORD!\"}")
   index = code.rindex(/class About\w*? \< EdgeCase::Koan/)
