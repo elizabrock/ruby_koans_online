@@ -1,13 +1,18 @@
-require 'test/unit'
-require 'capybara/poltergeist'
+require 'rubygems'
+require 'bundler/setup'
+Bundler.require(:default, :test)
+require File.expand_path '../../app.rb', __FILE__
 
 class TestKoansIntegration < Test::Unit::TestCase
   include Capybara::DSL
 
-  setup do
+  def self.startup
     Capybara.current_driver = :poltergeist
     Capybara.app_host = 'http://localhost:9292' # TODO: Fire up the app automatically.
     Capybara.match = :first
+  end
+
+  setup do
     page.reset!
   end
 

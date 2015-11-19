@@ -1,3 +1,7 @@
+require 'rubygems'
+require 'bundler/setup'
+
+Bundler.require(:default)
 require 'timeout'
 require File.expand_path(File.dirname(__FILE__) + '/lib/fake_file')
 require File.expand_path(File.dirname(__FILE__) + '/lib/string')
