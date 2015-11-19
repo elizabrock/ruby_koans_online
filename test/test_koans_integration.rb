@@ -8,6 +8,7 @@ class TestKoansIntegration < Test::Unit::TestCase
     Capybara.current_driver = :poltergeist
     Capybara.app_host = 'http://localhost:9292' # TODO: Fire up the app automatically.
     Capybara.match = :first
+    page.reset!
   end
 
   def test_homepage
@@ -74,7 +75,6 @@ class TestKoansIntegration < Test::Unit::TestCase
   end
 
   def test_about_scoring_project_shouldnt_share_answers_with_dice_project
-      page.reset!
       page.visit "/en/about_dice_project"
       fill_inputs_with KoansWithAnswers[:about_dice_project]
       click_on "Click to submit Meditation or press Enter while in the form."
@@ -85,7 +85,6 @@ class TestKoansIntegration < Test::Unit::TestCase
   end
 
   def test_about_triangle_project_2_should_share_answers_with_triangle_project
-      page.reset!
       page.visit "/en/about_triangle_project"
       input = page.find(".koanInput")
       assert_equal "# You need to write the triangle method\n", input.value
@@ -101,7 +100,6 @@ class TestKoansIntegration < Test::Unit::TestCase
   end
 
   def test_about_triangle_syntax_error
-    page.reset!
     missing_end_answer = "def triangle(a,b,c)
 if a == b && b == c
 if c == a
@@ -118,7 +116,6 @@ end"
   end
 
   def test_about_asserts_syntax_error
-    page.reset!
     modified_answers = KoansWithAnswers[:about_asserts].clone
     modified_answers[0] = ":::"
     page.visit "/en/about_asserts"
@@ -129,7 +126,6 @@ end"
   end
 
   def test_about_triangle_undefined_method_should_show_errors
-    page.reset!
     undefined_method_answer = "def triangle(a,b,c)
   matching_sides = [ a==b, b==c, c==a]
   if matching_sides.sum(true) == 3
@@ -147,7 +143,6 @@ end"
   end
 
   def test_attempts_to_shell_out_in_about_triangle
-    page.reset!
     attempt_to_shell_out = "`pwd`"
     page.visit "/en/about_triangle_project"
     fill_inputs_with [attempt_to_shell_out]
@@ -157,7 +152,6 @@ end"
   end
 
   def test_attempts_to_shell_out_in_about_asserts
-    page.reset!
     modified_answers = KoansWithAnswers[:about_asserts].clone
     modified_answers[0] = "`pwd`"
     page.visit "/en/about_asserts"
@@ -168,7 +162,6 @@ end"
   end
 
   def test_infinite_loop_in_about_triangle
-    page.reset!
     infinite_loop = "def triangle(a, b, c)
   while(true) do
     puts 'hi'
@@ -182,7 +175,6 @@ end"
   end
 
   def test_infinite_loop_in_about_asserts
-    page.reset!
     modified_answers = KoansWithAnswers[:about_asserts].clone
     modified_answers[0] = 'loop{ puts "hi" }'
     page.visit "/en/about_asserts"
@@ -194,7 +186,6 @@ end"
 
   FILE_OPEN = 'File.open("config.ru")'
   def test_file_open_in_about_triangle_without_leading_space
-    page.reset!
     page.visit "/en/about_triangle_project"
     fill_inputs_with [FILE_OPEN]
     click_on "Click to submit Meditation or press Enter while in the form."
@@ -203,7 +194,6 @@ end"
   end
 
   def test_file_open_in_about_triangle_with_leading_space
-    page.reset!
     page.visit "/en/about_triangle_project"
     fill_inputs_with [" " + FILE_OPEN]
     click_on "Click to submit Meditation or press Enter while in the form."
@@ -212,7 +202,6 @@ end"
   end
 
   def test_file_open_in_about_asserts_without_leading_space
-    page.reset!
     page.visit "/en/about_asserts"
     modified_answers = KoansWithAnswers[:about_asserts].clone
     modified_answers[0] = FILE_OPEN
@@ -222,7 +211,6 @@ end"
   end
 
   def test_file_open_in_about_asserts_with_leading_space
-    page.reset!
     page.visit "/en/about_asserts"
     modified_answers = KoansWithAnswers[:about_asserts].clone
     modified_answers[0] = " " + FILE_OPEN
@@ -232,7 +220,6 @@ end"
   end
 
   def test_open_in_about_triangle_with_leading_space
-    page.reset!
     page.visit "/en/about_triangle_project"
     triangle_open = 'def triangle(a, b, c)
  open("config.ru").each_line { |line| puts line }
@@ -243,7 +230,6 @@ end'
   end
 
   def test_open_in_about_triangle_without_whitespace
-    page.reset!
     page.visit "/en/about_triangle_project"
     triangle_open = 'def triangle(a, b, c)open("config.ru").each_line { |line| puts line } \n end'
     fill_inputs_with [triangle_open]
@@ -252,7 +238,6 @@ end'
   end
 
   def test_open_in_about_triangle_without_leading_space
-    page.reset!
     page.visit "/en/about_triangle_project"
     triangle_open = 'def triangle(a, b, c)
 open("config.ru").each_line { |line| puts line }
@@ -263,7 +248,6 @@ end'
   end
 
   def test_open_in_about_asserts_with_leading_space
-    page.reset!
     page.visit "/en/about_asserts"
     modified_answers = KoansWithAnswers[:about_asserts].clone
     # The extra leading spaces are significant!:
@@ -275,7 +259,6 @@ end'
   end
 
   def test_open_in_about_asserts_without_leading_space
-    page.reset!
     page.visit "/en/about_asserts"
     modified_answers = KoansWithAnswers[:about_asserts].clone
     # The lack of leading space is significant!:
@@ -287,7 +270,6 @@ end'
   end
 
   def test_io_open_in_about_triangle
-    page.reset!
     page.visit "/en/about_triangle_project"
     io_open_answer = 'def triangle(a, b, c)
 IO.readlines("config.ru")
@@ -298,7 +280,6 @@ end'
   end
 
   def test_io_open_in_about_nil
-    page.reset!
     page.visit "/en/about_nil"
     modified_answers = KoansWithAnswers[:about_nil].clone
     modified_answers[0] = 'IO.readlines("config.ru")'
@@ -309,7 +290,6 @@ end'
 
   DIR_REQUEST = 'Dir.getwd'
   def test_dir_request_about_triangle
-    page.reset!
     page.visit "/en/about_triangle_project"
     fill_inputs_with ["def triangle(a, b, c) \n #{DIR_REQUEST} \n end"]
     click_on "Click to submit Meditation or press Enter while in the form."
@@ -317,7 +297,6 @@ end'
   end
 
   def test_dir_request_about_asserts
-    page.reset!
     page.visit "/en/about_asserts"
     modified_answers = KoansWithAnswers[:about_asserts].clone
     modified_answers[0] = DIR_REQUEST
@@ -328,7 +307,6 @@ end'
 
   HTTP_REQUEST = 'Net::HTTP.get_response(URI.parse("http://localhost:9292"))'
   def test_http_request_about_triangle
-    page.reset!
     page.visit "/en/about_triangle_project"
     fill_inputs_with ["def triangle(a, b, c) \n #{HTTP_REQUEST} \n end"]
     click_on "Click to submit Meditation or press Enter while in the form."
@@ -337,7 +315,6 @@ end'
   end
 
   def test_http_request_about_asserts
-    page.reset!
     page.visit "/en/about_asserts"
     modified_answers = KoansWithAnswers[:about_asserts].clone
     modified_answers[0] = HTTP_REQUEST
