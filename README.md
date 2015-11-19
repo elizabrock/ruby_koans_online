@@ -32,8 +32,7 @@ Alternatively, you could use [`rerun`](https://rubygems.org/gems/rerun). This re
 
 #### Running the tests:
 
-1. Start the app using `rackup`. Ensure it's running on port `9292` (the default).
-2. Run `rake`.
+1. Run `rake`.
 
 ## Contributing
 

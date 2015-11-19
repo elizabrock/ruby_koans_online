@@ -71,7 +71,6 @@ DEPENDENCIES
   poltergeist
   pry
   puma
-  rb-fsevent
   rerun
   sinatra
   test-unit

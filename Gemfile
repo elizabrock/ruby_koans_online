@@ -8,7 +8,7 @@ gem 'haml'
 gem 'i18n'
 gem 'puma'
 
-gem 'rb-fsevent'
+# gem 'rb-fsevent'
 gem 'test-unit'
 
 group(:development) do

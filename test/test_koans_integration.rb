@@ -1,6 +1,9 @@
 require 'rubygems'
 require 'bundler/setup'
-Bundler.require(:default, :test)
+require 'sinatra'
+
+Sinatra::Application.environment = :test
+Bundler.require :default, Sinatra::Application.environment
 require File.expand_path '../../app.rb', __FILE__
 
 class TestKoansIntegration < Test::Unit::TestCase
@@ -8,7 +11,7 @@ class TestKoansIntegration < Test::Unit::TestCase
 
   def self.startup
     Capybara.current_driver = :poltergeist
-    Capybara.app_host = 'http://localhost:9292' # TODO: Fire up the app automatically.
+    Capybara.app = Sinatra::Application
     Capybara.match = :first
   end
 
@@ -188,7 +191,7 @@ end"
   def test_infinite_loop_in_about_triangle
     infinite_loop = "def triangle(a, b, c)
   while(true) do
-    puts 'hi'
+    'hi'
   end
 end"
     page.visit "/en/about_triangle_project"
@@ -200,7 +203,7 @@ end"
 
   def test_infinite_loop_in_about_asserts
     modified_answers = KoansWithAnswers[:about_asserts].clone
-    modified_answers[0] = 'loop{ puts "hi" }'
+    modified_answers[0] = 'loop{ "hi" }'
     page.visit "/en/about_asserts"
     fill_inputs_with modified_answers
     click_on "Click to submit Meditation or press Enter while in the form."
@@ -329,7 +332,8 @@ end'
     assert_include page.body, "undefined method `getwd' for FakeFile:Class"
   end
 
-  HTTP_REQUEST = 'Net::HTTP.get_response(URI.parse("http://localhost:9292"))'
+  # TODO: This still makes the actual request, it only errors out afterwards :(
+  HTTP_REQUEST = 'Net::HTTP.get_response(URI.parse("http://google.com"))'
   def test_http_request_about_triangle
     page.visit "/en/about_triangle_project"
     fill_inputs_with ["def triangle(a, b, c) \n #{HTTP_REQUEST} \n end"]

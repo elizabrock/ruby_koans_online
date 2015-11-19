@@ -64,7 +64,7 @@ def runnable_code(session={})
     require 'test/unit/assertions'
     Test::Unit::Assertions::AssertionMessage.use_pp= false
 
-    RESULTS = {:failures => {}, :pass_count => 0}
+    $RESULTS = {:failures => {}, :pass_count => 0}
     $SAFE = 2
     Timeout.timeout(2) {
       #{global_code}
@@ -75,17 +75,18 @@ def runnable_code(session={})
           #{code}
           path = EdgeCase::ThePath.new
           path.online_walk
-          RESULTS[:pass_count] = path.sensei.pass_count
-          RESULTS[:failures] = path.sensei.failures
+          $RESULTS[:pass_count] = path.sensei.pass_count
+          $RESULTS[:failures] = path.sensei.failures
         end
       end
       KoanArena.send(:remove_const, :UniqueRun#{unique_id})
     }
-    RESULTS
+    $RESULTS
   RUNNABLE_CODE
 end
 
 enable :sessions
+set :root, File.dirname(__FILE__)
 
 def run_koan
   count = 0
