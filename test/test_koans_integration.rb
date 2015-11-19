@@ -323,4 +323,24 @@ end'
     assert_include page.body, "What do you think you're doing, Dave?"
     assert_include page.body, "Click your browser back button to return."
   end
+
+  def test_ENV_in_about_triangle
+    page.visit "/en/about_triangle_project"
+    fill_inputs_with ["def triangle(a, b, c) \n ENV \n end"]
+    click_on "Click to submit Meditation or press Enter while in the form."
+    # Matching on the <pre> formatted text isn't working well, so I've split it
+    # up for this test.
+    assert_include page.body, ':hacker'
+    assert_include page.body, 'AH AH AH! YOU DIDN\'T SAY THE MAGIC WORD!'
+  end
+
+  def test_ENV_in_about_asserts
+    page.visit "/en/about_asserts"
+    modified_answers = KoansWithAnswers[:about_asserts].clone
+    modified_answers[0] = "ENV"
+    fill_inputs_with modified_answers
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "Syntax Error"
+    assert_include page.body, "{:hacker =&gt; \"AH AH AH! YOU DIDN'T SAY TH"
+  end
 end

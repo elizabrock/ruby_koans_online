@@ -84,7 +84,7 @@ def runnable_code(session={})
     gsub("IO", "FakeFile").
     gsub("Dir", "FakeFile").
     gsub(/([^\.])open\(/, '\1FakeFile.gimme(').
-    gsub("ENV", "{:hacker => \"AH AH AH! YOU DIDN\'T SAY THE MAGIC WORD!\"}")
+    gsub("ENV", '{:hacker => "AH AH AH! YOU DIDN\'T SAY THE MAGIC WORD!"}')
   index = code.rindex(/class About\w*? \< EdgeCase::Koan/)
   global_code = code[0...index]
   reset_global_classes = (global_code.scan(/class (\w+)/).flatten + CLASSES_ALLOWED).collect{|c| "Object.send(:remove_const, :#{c}) if defined? #{c};" }.join
