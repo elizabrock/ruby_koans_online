@@ -138,15 +138,13 @@ def run_koan
       rescue StandardError => e
         @error = ['Standard Error', e.message, e.backtrace, e.inspect].flatten.join('<br/>')
         error_results
+      rescue Exception, Error => e
+        @error = ['error', e.message].flatten.join('<br/>')
+        error_results
       end
     }.value
-  rescue Exception => e
-    # TODO: Test me
-    @error = ['syntax error', e.message].flatten.join('<br/>')
-  rescue Error => e
-    # TODO: Test me
-    @error = ['error', e.message].flatten.join('<br/>')
   end
+  # TODO: Present a nicer UI for error messages
   @pass_count = results[:pass_count]
   @failures   = results[:failures]
   @failures[:epic_fail] = true if @error

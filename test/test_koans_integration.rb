@@ -99,6 +99,25 @@ class TestKoansIntegration < Test::Unit::TestCase
       assert_include page.body, "has heightened your awareness"
   end
 
+  def test_about_triangle_standard_error
+    page.visit "/en/about_triangle_project"
+    triangle_open = 'def triangle(a, b, c)
+ 0/0
+end'
+    fill_inputs_with [triangle_open]
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "divided by 0"
+  end
+
+  def test_about_asserts_standard_error
+    page.visit "/en/about_asserts"
+    modified_answers = KoansWithAnswers[:about_asserts].clone
+    modified_answers[0] = '0/0'
+    fill_inputs_with modified_answers
+    click_on "Click to submit Meditation or press Enter while in the form."
+    assert_include page.body, "divided by 0"
+  end
+
   def test_about_triangle_syntax_error
     missing_end_answer = "def triangle(a,b,c)
 if a == b && b == c
