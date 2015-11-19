@@ -1,4 +1,5 @@
 require 'timeout'
+require File.expand_path(File.dirname(__FILE__) + '/fake_file')
 require File.expand_path(File.dirname(__FILE__) + '/string')
 require File.expand_path(File.dirname(__FILE__) + '/path_grabber')
 KOAN_FILENAMES     = PathGrabber.new.koan_filenames
@@ -6,42 +7,6 @@ EDGECASE_CODE      = IO.read("koans/edgecase.rb").remove_require_lines.split(/EN
 EDGECASE_OVERRIDES = IO.read("overrides.rb")
 ARRAY_ORIGINAL     = IO.read("koans/about_arrays.rb").remove_require_lines
 CLASSES_ALLOWED    = %w(TriangleError Proxy DiceSet)
-
-class FakeFile
-  CONTENT = "this\nis\na\ntest"
-
-  def self.gimme(x=nil, &block)
-    ff = FakeFile.new
-    return block.call(ff) if block
-    ff
-  end
-
-  def initialize
-    @lines = CONTENT.split("\n")
-  end
-
-  def gets
-    @current_line_index ||= 0
-    line = @lines[@current_line_index]
-    @current_line_index += 1
-    "#{line}\n" if line
-  end
-
-  def close;end
-
-  def self.exist?(name)
-    raise TypeError unless name.respond_to? :to_str
-    name.to_str == 'example_file.txt'
-  end
-
-  def map(&block)
-    @lines.map(&block)
-  end
-
-  def inspect
-    "#<File:example_file.txt>"
-  end
-end
 
 def input
   @input = (params[:input] ||= [])
@@ -202,4 +167,3 @@ def do_stuff
     return haml next_page
   end
 end
-
